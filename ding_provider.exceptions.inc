@@ -89,7 +89,7 @@ class DingProviderException extends Exception {
 
   public function getCallback() {
     if (isset($this->callback)) {
-      return $callback;
+      return $this->callback;
     }
   }
 }
