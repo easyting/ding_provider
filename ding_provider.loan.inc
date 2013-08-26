@@ -140,6 +140,10 @@ class DingProviderLoan extends DingEntityBase {
       return $this->language = $this->entity->language;
     }
   }
+
+  function getNotes() {
+    return '';
+  }
 }
 
 /**
