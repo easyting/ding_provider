@@ -248,7 +248,14 @@ function ding_provider_invoke_page($type, $hook) {
   try {
     $function = _ding_provider_function($type, $hook);
     if ($function) {
-      return call_user_func_array($function, $args);
+      $cid = $type . '-' . $hook;
+      $cache = ding_session_cache_get('ding_provider', $cid);
+      if ($cache) {
+        return $cache;
+      }
+      $data = call_user_func_array($function, $args);
+      ding_session_cache_set('ding_provider', $cid, $data);
+      return $data;
     }
   }
   catch (Exception $e) {
@@ -272,6 +279,17 @@ function ding_provider_invoke_page($type, $hook) {
       return NULL;
     }
   }
+}
+
+/**
+ * Implements hook_ding_session_cache_defaults().
+ */
+function ding_provider_ding_session_cache_defaults() {
+  return array(
+    'titel' => 'Ding Provider',
+    'enabled' => TRUE,
+    'expire' => 300,
+  );
 }
 
 /**
@@ -580,7 +598,18 @@ function _ding_provider_function($type, $hook, $quiet = FALSE) {
       // Trigger an error. This might be a module attempting to use a wrong
       // hook, or an improperly implemented plugin. In either case, it's
       // programmer error.
-      throw new DingProviderDoesntImplement(t('Ding @type provider (@module module) does not implement @function', array('@type' => $type, '@function' => $hook, '@module' => $provider['module'])), E_USER_ERROR);
+      throw new DingProviderDoesntImplement(
+        t(
+          'Ding @type provider (@module module) does not implement @hook (@function)',
+          array(
+            '@type' => $type,
+            '@hook' => $hook,
+            "@function" => $function,
+            '@module' => $provider['module'],
+          )
+        ),
+        E_USER_ERROR
+      );
     }
   }
   elseif (!$quiet) {
