@@ -4,8 +4,6 @@ package = Ding!
 version = "7.x-1.15"
 core = 7.x
 
-dependencies[] = ding_session_cache
-
 files[] = ding_provider.module
 files[] = ding_provider.debt.inc
 files[] = ding_provider.exceptions.inc

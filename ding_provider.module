@@ -248,14 +248,7 @@ function ding_provider_invoke_page($type, $hook) {
   try {
     $function = _ding_provider_function($type, $hook);
     if ($function) {
-      $cid = $type . '-' . $hook;
-      $cache = ding_session_cache_get('ding_provider', $cid);
-      if ($cache) {
-        return $cache;
-      }
-      $data = call_user_func_array($function, $args);
-      ding_session_cache_set('ding_provider', $cid, $data);
-      return $data;
+      return call_user_func_array($function, $args);
     }
   }
   catch (Exception $e) {
@@ -279,17 +272,6 @@ function ding_provider_invoke_page($type, $hook) {
       return NULL;
     }
   }
-}
-
-/**
- * Implements hook_ding_session_cache_defaults().
- */
-function ding_provider_ding_session_cache_defaults() {
-  return array(
-    'titel' => 'Ding Provider',
-    'enabled' => TRUE,
-    'expire' => 300,
-  );
 }
 
 /**
