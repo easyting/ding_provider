@@ -230,7 +230,7 @@ class DingProviderReservationUserError extends DingProviderUserException {
 class DingProviderReservationExists extends DingProviderReservationUserError {
   public function __construct($message = "", $code = 0) {
     if (empty($message)) {
-      $message = t('"You have already reserved "@title".');
+      $message = t('You have already reserved "@title".');
     }
     parent::__construct($message);
   }
