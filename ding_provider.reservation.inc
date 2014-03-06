@@ -231,12 +231,8 @@ class DingProviderReservationExists extends DingProviderReservationUserError {
   public function __construct($message = "", $code = 0) {
     if (empty($message)) {
       $message = t('You have already reserved "@title".');
-
-      if ($code) {
-        $message .= t('Error message "@code."', array('@code' => $code));
-      }
     }
-    parent::__construct($message);
+    parent::__construct($message, $code);
   }
 }
 
@@ -247,12 +243,8 @@ class DingProviderReservationNotAvailable extends DingProviderReservationUserErr
   public function __construct($message = "", $code = 0) {
     if (empty($message)) {
       $message = t('"@title" is not available for reservation.');
-
-      if ($code) {
-        $message .= t('Error message "@code."', array('@code' => $code));
-      }
     }
-    parent::__construct($message);
+    parent::__construct($message, $code);
   }
 }
 
@@ -263,11 +255,7 @@ class DingProviderReservationNotAllowed extends DingProviderReservationUserError
   public function __construct($message = "", $code = 0) {
     if (empty($message)) {
       $message = t("You're not allowed to reserve \"@title\".");
-
-      if ($code) {
-        $message .= t('Error message "@code."', array('@code' => $code));
-      }
     }
-    parent::__construct($message);
+    parent::__construct($message, $code);
   }
 }
